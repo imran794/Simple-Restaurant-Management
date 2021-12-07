@@ -1,7 +1,8 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-
+use App\Http\Controllers\Admin\DashboardController;
+use App\Http\Controllers\Admin\SliderController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -21,6 +22,10 @@ Auth::routes();
 
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 
-Route::get('dashboard', function(){
-    return view('admin.dashboard');
-} );
+
+
+Route::group(['prefix' => 'admin','middleware' => 'auth'], function() {
+    Route::get('dashboard',[DashboardController::class, 'index'])->name('admin.dashboard');
+
+    Route::resource('slider', SliderController::class);
+});
